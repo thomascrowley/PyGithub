@@ -572,34 +572,34 @@ class Organization(Framework.TestCase):
 
     @mock.patch("github.PublicKey.encrypt")
     def testCreateActionsSecret(self, encrypt):
-        org = self.g.get_organization("pygithubtest")
+        self.org = self.g.get_organization("pygithubtest")
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
-        secret = org.create_secret("secret_name", "secret-value", visibility="all")
+        secret = self.org.create_secret("secret_name", "secret-value", visibility="all")
         self.assertIsNotNone(secret)
 
     @mock.patch("github.PublicKey.encrypt")
     def testCreateDependabotSecret(self, encrypt):
-        org = self.g.get_organization("pygithubtest")
+        self.org = self.g.get_organization("pygithubtest")
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
-        secret = org.create_secret("secret_name", "secret-value", secret_type="dependabot", visibility="all")
+        secret = self.org.create_secret("secret_name", "secret-value", secret_type="dependabot", visibility="all")
         self.assertIsNotNone(secret)
 
     def testOrgGetSecretAssertion(self):
-        org = self.g.get_organization("pygithubtest")
+        self.org = self.g.get_organization("pygithubtest")
         try:
-            org.get_secret(secret_name="splat", secret_type="supersecret")
+            self.org.get_secret(secret_name="splat", secret_type="supersecret")
         except AssertionError:
             assert True
 
     @mock.patch("github.PublicKey.encrypt")
     def testCreateDependabotSecretSelected(self, encrypt):
-        org = self.g.get_organization("pygithubtest")
-        repos = [org.get_repo("demo-repo-1"), org.get_repo("demo-repo-2")]
+        self.org = self.g.get_organization("pygithubtest")
+        repos = [self.org.get_repo("demo-repo-1"), self.org.get_repo("demo-repo-2")]
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
-        secret = org.create_secret(
+        secret = self.org.create_secret(
             secret_name="secret_dep_name",
             unencrypted_value="secret-value",
             visibility="selected",
@@ -613,11 +613,11 @@ class Organization(Framework.TestCase):
 
     @mock.patch("github.PublicKey.encrypt")
     def testOrgSecretEdit(self, encrypt):
-        org = self.g.get_organization("pygithubtest")
-        repos = [org.get_repo("demo-repo-1"), org.get_repo("demo-repo-2")]
+        self.org = self.g.get_organization("pygithubtest")
+        repos = [self.org.get_repo("demo-repo-1"), self.org.get_repo("demo-repo-2")]
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
-        secret = org.create_secret(
+        secret = self.org.create_secret(
             secret_name="secret_act_name",
             unencrypted_value="secret-value",
             visibility="selected",
