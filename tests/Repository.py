@@ -1956,7 +1956,7 @@ class Repository(Framework.TestCase):
 
     @mock.patch("github.PublicKey.encrypt")
     def testCreateRepoActionsSecret(self, encrypt):
-        repo = self.g.get_repo("pygithubtest/demo-repo-1")
+        repo = self.g.get_repo("demoorg/demo-repo-1")
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
         secret = repo.create_secret("secret_name", "secret-value", "actions")
@@ -1964,14 +1964,14 @@ class Repository(Framework.TestCase):
 
     @mock.patch("github.PublicKey.encrypt")
     def testCreateRepoDependabotSecret(self, encrypt):
-        repo = self.g.get_repo("pygithubtest/demo-repo-1")
+        repo = self.g.get_repo("demoorg/demo-repo-1")
         # encrypt returns a non-deterministic value, we need to mock it so the replay data matches
         encrypt.return_value = "M+5Fm/BqTfB90h3nC7F3BoZuu3nXs+/KtpXwxm9gG211tbRo0F5UiN0OIfYT83CKcx9oKES9Va4E96/b"
         secret = repo.create_secret("secret_name", "secret-value", "dependabot")
         self.assertIsNotNone(secret)
 
     def testRepoGetSecretAssertion(self):
-        repo = self.g.get_repo("pygithubtest/demo-repo-1")
+        repo = self.g.get_repo("demoorg/demo-repo-1")
         try:
             repo.get_secret(secret_name="splat", secret_type="supersecret")
         except AssertionError:
